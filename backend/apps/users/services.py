@@ -30,3 +30,30 @@ class UserService:
             "access": str(refresh.access_token),
             "refresh": str(refresh),
         }
+
+    @staticmethod
+    @transaction.atomic
+    def change_password(user, current_password, new_password):
+        #check_password built-in verification function. verify that the current password is correct
+        if not user.check_password(current_password):
+            raise ValidationError("Current password is incorrect.")
+
+        if current_password == new_password:
+            raise ValidationError(
+                "The new password must be different from the current password."
+            )
+
+        user.set_password(new_password)
+        user.save(update_fields=["password"])
+
+        return user
+
+    @staticmethod
+    def logout(refresh_token):
+        try:
+            #The string from the client becomes a RefreshToken instance.
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+        except Exception:
+            raise ValidationError("Invalid or expired refresh token.")
+

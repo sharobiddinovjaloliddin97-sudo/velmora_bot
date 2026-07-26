@@ -2,7 +2,8 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import User
-from .serializers import RegisterSerializer, UserSerializer, LoginSerializer
+from .serializers import RegisterSerializer, UserSerializer, LoginSerializer, ChangePasswordSerializer, LogoutSerializer
+
 
 # CreateAPIView creates db object
 class RegisterView(generics.CreateAPIView):
@@ -51,5 +52,32 @@ class MeView(generics.RetrieveAPIView):
         return self.request.user
 
 
+class ChangePasswordView(generics.GenericAPIView):
+    serializer_class = ChangePasswordSerializer
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        # is_valid() - triggers validate() in serializer
+        serializer.is_valid(raise_exception=True)
+
+        # ---View's only responsibility is to return an HTTP response.
+        return Response(
+            {"detail": "Password changed successfully."},
+            status=status.HTTP_200_OK,
+        )
+
+class LogoutView(generics.GenericAPIView):
+    serializer_class = LogoutSerializer
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        return Response(
+            {"detail": "Logged out successfully."},
+            status=status.HTTP_200_OK,
+        )
 # RegisterSerializer is designed for input.
 # UserSerializer is designed for output.

@@ -58,3 +58,27 @@ class LoginSerializer(serializers.Serializer):
             email=attrs["email"],
             password=attrs["password"],
         )
+
+class ChangePasswordSerializer(serializers.Serializer):
+    current_password = serializers.CharField(write_only=True)
+    new_password = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        #gets the current HTTP request.
+        request = self.context["request"]
+
+        UserService.change_password(
+            user=request.user,
+            current_password=attrs["current_password"],
+            new_password=attrs["new_password"],
+        )
+
+        return attrs
+
+
+class LogoutSerializer(serializers.Serializer):
+    refresh = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        UserService.logout(attrs["refresh"])
+        return attrs

@@ -86,7 +86,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "velmora_db",
-        "USER": "velmora_user",
+        "USER": "velmora_admin",
         "PASSWORD": "root",
         "HOST": "localhost",
         "PORT": "5432",

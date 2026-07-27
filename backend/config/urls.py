@@ -24,6 +24,11 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/users/", include("apps.users.urls")),
     path("api/catalog/", include("apps.catalog.urls")),
+    path("api/cart/", include("apps.cart.urls")),
+    path("api/orders/", include("apps.orders.urls")),
+    path("api/loyalty/", include("apps.loyalty.urls")),
+    path("api/notifications/", include("apps.notifications.urls")),
+    path("api/payments/", include("apps.payments.urls")),
 ]
 
 urlpatterns += static(

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'apps.cart',
     'apps.orders',
     'apps.payments',
+    'apps.notifications',
     'apps.loyalty',
     'apps.common',
     'rest_framework',

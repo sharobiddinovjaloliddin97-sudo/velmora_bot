@@ -48,3 +48,14 @@ class User(AbstractUser):
         choices=LANGUAGE_CHOICES,
         default="uz",
     )
+    
+    loyalty_coins = models.PositiveIntegerField(
+        default=0,
+        help_text="Loyalty coins earned from orders"
+    )
+
+    date_of_birth = models.DateField(
+        null=True,
+        blank=True,
+        help_text="User's date of birth for birthday vouchers"
+    )

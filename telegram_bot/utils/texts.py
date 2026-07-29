@@ -22,10 +22,16 @@ TEXTS = {
         # Cart
         "add_to_cart": "🛒 Savatchaga qo'shish",
         "clear_cart": "🗑 Savatchani tozalash",
-        "place_order": "✅ Buyurtma berish",
+        "choose_action": "Amalni tanlang:",
+
+        # Order
+        "place_order": "📦 Buyurtma berish",
+        "confirm_order": "Buyurtmani tasdiqlaysizmi?",
+        "order_success": "✅ Buyurtmangiz muvaffaqiyatli qabul qilindi!",
 
         # Profile
         "my_profile": "👤 Mening profilim",
+        "my_orders": "📦 Mening buyurtmalarim",
 
         # General
         "cancel": "❌ Bekor qilish",
@@ -56,10 +62,16 @@ TEXTS = {
         # Cart
         "add_to_cart": "🛒 Добавить в корзину",
         "clear_cart": "🗑 Очистить корзину",
-        "place_order": "✅ Оформить заказ",
+        "choose_action": "Выберите действие:",
+
+        # Order
+        "place_order": "📦 Оформить заказ",
+        "confirm_order": "Подтвердить заказ?",
+        "order_success": "✅ Ваш заказ успешно оформлен!",
 
         # Profile
         "my_profile": "👤 Мой профиль",
+        "my_orders": "📦 Мои заказы",
 
         # General
         "cancel": "❌ Отмена",

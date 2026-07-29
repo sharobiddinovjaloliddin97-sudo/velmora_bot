@@ -17,8 +17,11 @@ class OrderAdmin(admin.ModelAdmin):
         "created_at",
     )
     search_fields = (
+        "id",
         "user__email",
         "user__username",
+        "user__phone_number",
+        "user__telegram_id",
     )
 
 

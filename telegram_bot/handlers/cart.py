@@ -4,7 +4,7 @@ from utils.texts import TEXTS
 from keyboards.after_add_to_cart import get_after_add_to_cart_keyboard
 from keyboards.cart import get_cart_keyboard
 from keyboards.main_menu import get_main_menu
-
+from handlers.order import place_order
 from keyboards.cart_item import get_cart_inline_keyboard
 
 
@@ -20,6 +20,8 @@ async def add_to_cart(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not product:
         await update.message.reply_text("❌ No product selected.")
         return States.CHOOSING_PRODUCT
+
+    print("ACCESS TOKEN:", access_token)
 
     await CartService.add_product(
         access_token=access_token,
@@ -109,14 +111,7 @@ async def send_cart(chat, access_token: str, language: str):
         TEXTS[language]["choose_action"],
         reply_markup=get_cart_keyboard(language),
     )
-    await chat.send_message(
-        text=(
-            "Choose an action:"
-            if language == "en"
-            else "Amalni tanlang:"
-        ),
-        reply_markup=get_cart_keyboard(),
-    )
+
 
 async def show_cart(update: Update, context: ContextTypes.DEFAULT_TYPE):
     access_token = context.user_data.get("access")
@@ -159,10 +154,7 @@ async def back_to_main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ConversationHandler.END
 
 
-async def place_order(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(
-        "🚧 Order creation will be implemented next."
-    )
+
 
 async def change_quantity(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query

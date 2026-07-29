@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'django_filters',
+    'jazzmin',
 ]
 
 MIDDLEWARE = [
@@ -87,7 +89,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "velmora_db",
-        "USER": "velmora_admin",
+        "USER": "velmora_user",
         "PASSWORD": "root",
         "HOST": "localhost",
         "PORT": "5432",
@@ -161,3 +163,25 @@ SIMPLE_JWT = {
 
 MEDIA_URL = "/media/"  #URL used to access uploaded files.
 MEDIA_ROOT = BASE_DIR / "media"   # Folder where uploaded files are stored.
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Velmora Admin",
+    "site_header": "Velmora Store",
+    "site_brand": "Velmora",
+    "welcome_sign": "Welcome to the Velmora Backend",
+    "copyright": "Velmora Ltd",
+    "search_model": ["users.User", "catalog.Product", "orders.Order"],
+    "show_ui_builder": False,
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar": "navbar-dark",
+    "theme": "darkly",
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_nav_child_indent": True,
+    "sidebar_nav_compact_style": True,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": True,
+    "theme_color": "default",
+    "accent": "accent-primary",
+}

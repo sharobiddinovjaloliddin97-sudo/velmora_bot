@@ -16,12 +16,15 @@ class UserSerializer(serializers.ModelSerializer):
             "phone_number",
             "telegram_id",
             "role",
+            "loyalty_coins",
+            "date_of_birth",
         )
 
         read_only_fields = (
             "id",
             "role",
             "telegram_id",
+            "loyalty_coins",
         )
 
 

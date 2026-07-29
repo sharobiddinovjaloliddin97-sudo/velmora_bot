@@ -85,7 +85,14 @@ app.add_handler(CommandHandler("start", start))
 # ==========================
 app.add_handler(
     MessageHandler(
-        filters.CONTACT | filters.Regex(LANGUAGE_PATTERN),
+        filters.Regex(LANGUAGE_PATTERN),
+        choose_language,
+    )
+)
+
+app.add_handler(
+    MessageHandler(
+        filters.CONTACT,
         register,
     )
 )
@@ -98,7 +105,8 @@ catalog_conv_handler = ConversationHandler(
         MessageHandler(
             filters.TEXT
             & (
-                filters.Regex(CATEGORIES_PATTERN)
+                filters.Regex(CATALOG_PATTERN)
+                | filters.Regex(CATEGORIES_PATTERN)
                 | filters.Regex(r"^🔙 Kategoriyalarga qaytish$")
                 | filters.Regex(r"^🔙 Назад к категориям$")
             ),
@@ -106,9 +114,15 @@ catalog_conv_handler = ConversationHandler(
         ),
     ],
     states={
+        States.CHOOSING_CATEGORY: [
+            MessageHandler(
+                filters.TEXT & ~filters.COMMAND,
+                catalog,
+            ),
+        ],
         States.CHOOSING_PRODUCT: [
             MessageHandler(
-                filters.TEXT & ~filters.COMMAND & ~filters.Regex(BACK_PATTERN),
+                filters.TEXT & ~filters.COMMAND & ~filters.Regex(BACK_PATTERN) & ~filters.Regex(CATEGORIES_PATTERN),
                 product,
             ),
             MessageHandler(
@@ -116,7 +130,7 @@ catalog_conv_handler = ConversationHandler(
                 back_to_main_menu,
             ),
             MessageHandler(
-                filters.Regex(r"^🔙 Kategoriyalarga qaytish$") | filters.Regex(r"^🔙 Назад к категориям$"),
+                filters.Regex(CATEGORIES_PATTERN),
                 catalog,
             ),
         ],
@@ -127,6 +141,10 @@ catalog_conv_handler = ConversationHandler(
             ),
             MessageHandler(
                 filters.Regex(BACK_PATTERN),
+                product,
+            ),
+            MessageHandler(
+                filters.Regex(CATEGORIES_PATTERN) | filters.Regex(CATALOG_PATTERN),
                 catalog,
             ),
         ],
@@ -134,6 +152,7 @@ catalog_conv_handler = ConversationHandler(
     fallbacks=[
         CommandHandler("start", start),
         MessageHandler(filters.Regex(MAIN_MENU_PATTERN), main_menu),
+        MessageHandler(filters.Regex(CART_PATTERN), show_cart),
     ],
 )
 app.add_handler(catalog_conv_handler)

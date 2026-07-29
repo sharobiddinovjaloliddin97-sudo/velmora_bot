@@ -126,7 +126,7 @@ async def my_orders(update: Update, context: ContextTypes.DEFAULT_TYPE):
         for order in orders:
             order_id = order.get('id', 'N/A')
             status = order.get('status', 'Pending')
-            total = order.get('total_price', 0)
+            total = float(order.get('total_price', 0))
             
             text = "📦 Buyurtma / Заказ:\n\n"
             text += f"🔖 ID: #{order_id}\n"
@@ -158,7 +158,7 @@ async def order_details(update: Update, context: ContextTypes.DEFAULT_TYPE):
         order = await OrderService.get_order(access_token, order_id)
         
         status = order.get('status', 'Pending')
-        total = order.get('total_price', 0)
+        total = float(order.get('total_price', 0))
         items = order.get('items', [])
         
         text = f"🔖 Buyurtma / Заказ ID: #{order_id}\n"
@@ -166,9 +166,9 @@ async def order_details(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         for item in items:
             name = item.get("product_name", "Mahsulot")
-            qty = item.get("quantity", 1)
-            price = item.get("price", 0)
-            text += f"▪️ {name} x {qty} = {float(price) * qty:,.0f} UZS\n"
+            qty = int(item.get("quantity", 1))
+            price = float(item.get("price", 0))
+            text += f"▪️ {name} x {qty} = {price * qty:,.0f} UZS\n"
             
         text += f"\n💵 Total: {total:,.0f} UZS"
         

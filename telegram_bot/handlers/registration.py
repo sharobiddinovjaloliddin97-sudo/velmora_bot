@@ -7,8 +7,12 @@ from utils.texts import TEXTS
 
 async def register(update: Update, context: ContextTypes.DEFAULT_TYPE):
     contact = update.message.contact
-
     language = context.user_data.get("language", "uz")
+
+    if not contact:
+        msg = "Iltimos, telefon raqamingizni yuborish uchun tugmani bosing!" if language == "uz" else "Пожалуйста, нажмите кнопку, чтобы отправить номер телефона!"
+        await update.message.reply_text(msg)
+        return
 
     data = {
         "telegram_id": update.effective_user.id,

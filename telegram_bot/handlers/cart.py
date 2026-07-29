@@ -122,6 +122,7 @@ async def show_cart(update: Update, context: ContextTypes.DEFAULT_TYPE):
         access_token,
         language,
     )
+    return ConversationHandler.END
 
 
 async def clear_cart(update: Update, context: ContextTypes.DEFAULT_TYPE):

@@ -33,19 +33,22 @@ class ProductListView(generics.ListAPIView):
     ]
 
     search_fields = [
-        "name",
-        "description",
+        "name_uz",
+        "name_ru",
+        "description_uz",
+        "description_ru",
         "material",
     ]
 
     ordering_fields = [
         "price",
         "created_at",
-        "name",
+        "name_uz",
     ]
 
     def get_queryset(self):
-        return CatalogService.get_products()
+        category = self.request.query_params.get("category")
+        return CatalogService.get_products(category)
 
 # RetrieveAPIView is a built-in DRF view that returns a single object based on a unique field (such as id or slug).
 class ProductDetailView(generics.RetrieveAPIView):

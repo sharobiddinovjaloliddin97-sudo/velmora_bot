@@ -60,3 +60,9 @@ class CartService:
             total += item.product.price * item.quantity
 
         return total
+
+    @staticmethod
+    def clear_cart(user):
+        cart = CartService.get_cart(user)
+
+        cart.items.all().delete()

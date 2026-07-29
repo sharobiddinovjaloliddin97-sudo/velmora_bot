@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+
 from .managers import UserManager
+
 
 class User(AbstractUser):
 
@@ -9,18 +11,40 @@ class User(AbstractUser):
         EMPLOYEE = "employee", "Employee"
         ADMIN = "admin", "Admin"
 
-
     email = models.EmailField(unique=True)
+
+    telegram_id = models.BigIntegerField(
+        unique=True,
+        null=True,
+        blank=True,
+    )
+
+    phone_number = models.CharField(
+        max_length=20,
+        blank=True,
+        default="",
+    )
+
     role = models.CharField(
         max_length=20,
         choices=Role.choices,
         default=Role.CUSTOMER,
     )
 
-    USERNAME_FIELD = "email"  # loginda avval username so'ragan bo'sa endi email so'redi
-    REQUIRED_FIELDS = ["username"] # superuser yaratyotganda username ham so'ra
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["username"]
 
-    objects = UserManager() # use the custom manager instead default
+    objects = UserManager()
 
     def __str__(self):
         return self.email
+
+    LANGUAGE_CHOICES = [
+        ("uz", "Uzbek"),
+        ("ru", "Russian"),
+    ]
+    language = models.CharField(
+        max_length=2,
+        choices=LANGUAGE_CHOICES,
+        default="uz",
+    )

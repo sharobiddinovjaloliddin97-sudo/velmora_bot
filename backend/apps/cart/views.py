@@ -64,6 +64,15 @@ class CartViewSet(viewsets.ViewSet):
             status=status.HTTP_200_OK,
         )
 
+    @action(detail=False, methods=["delete"])
+    def clear_cart(self, request):
+        CartService.clear_cart(request.user)
+
+        return Response(
+            {"detail": "Cart cleared successfully."},
+            status=status.HTTP_200_OK,
+        )
+    
     @action(detail=False, methods=["get"])
     def total(self, request):
         total = CartService.get_cart_total(request.user)

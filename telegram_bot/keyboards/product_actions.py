@@ -1,10 +1,12 @@
 from telegram import ReplyKeyboardMarkup
 
+from utils.texts import TEXTS
 
-def get_product_actions_keyboard():
+
+def get_product_actions_keyboard(language: str):
     keyboard = [
-        ["🛒 Add to Cart"],
-        ["🔙 Products"],
+        [TEXTS[language]["add_to_cart"]],
+        [TEXTS[language]["back"]],
     ]
 
     return ReplyKeyboardMarkup(

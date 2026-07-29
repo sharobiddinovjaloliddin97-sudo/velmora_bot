@@ -14,6 +14,41 @@ class UserService:
         return User.objects.create_user(**validated_data)
 
     @staticmethod
+    @transaction.atomic
+    def telegram_register(validated_data):
+        telegram_id = validated_data["telegram_id"]
+
+        defaults = {
+            "email": f"tg_{telegram_id}@telegram.local",
+            "username": f"tg_{telegram_id}",
+            "phone_number": validated_data["phone_number"],
+            "first_name": validated_data.get("first_name", ""),
+            "last_name": validated_data.get("last_name", ""),
+            "language": validated_data["language"],
+        }
+
+        user, created = User.objects.get_or_create(
+            telegram_id=telegram_id,
+            defaults=defaults,
+        )
+
+        if not created:
+            user.phone_number = validated_data["phone_number"]
+            user.first_name = validated_data.get("first_name", "")
+            user.last_name = validated_data.get("last_name", "")
+            user.language = validated_data["language"]
+            user.save()
+
+        refresh = RefreshToken.for_user(user)
+
+        return {
+            "user": user,
+            "access": str(refresh.access_token),
+            "refresh": str(refresh),
+            "created": created,
+        }
+
+    @staticmethod
     def login(email, password):
         user = authenticate(
             username=email,
@@ -34,7 +69,6 @@ class UserService:
     @staticmethod
     @transaction.atomic
     def change_password(user, current_password, new_password):
-        #check_password built-in verification function. verify that the current password is correct
         if not user.check_password(current_password):
             raise ValidationError("Current password is incorrect.")
 
@@ -51,9 +85,9 @@ class UserService:
     @staticmethod
     def logout(refresh_token):
         try:
-            #The string from the client becomes a RefreshToken instance.
             token = RefreshToken(refresh_token)
             token.blacklist()
         except Exception:
             raise ValidationError("Invalid or expired refresh token.")
+
 

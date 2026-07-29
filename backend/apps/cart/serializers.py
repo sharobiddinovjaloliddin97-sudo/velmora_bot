@@ -2,11 +2,15 @@ from rest_framework import serializers
 
 from .models import Cart, CartItem
 
-# Returns each product in the cart.
+
 class CartItemSerializer(serializers.ModelSerializer):
-    #Go through the product relationship and return its name
-    product_name = serializers.CharField(
-        source="product.name",
+    product_name_uz = serializers.CharField(
+        source="product.name_uz",
+        read_only=True,
+    )
+
+    product_name_ru = serializers.CharField(
+        source="product.name_ru",
         read_only=True,
     )
 
@@ -22,7 +26,8 @@ class CartItemSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "product",
-            "product_name",
+            "product_name_uz",
+            "product_name_ru",
             "product_price",
             "quantity",
         )

@@ -2,31 +2,26 @@ from rest_framework import serializers
 
 from .models import User
 from .services import UserService
-from django.contrib.auth import authenticate
-from rest_framework_simplejwt.tokens import RefreshToken
 
-#Historically, Django was designed around username-based authentication.
-#Nowadays, many applications use email instead.
-#Since we're extending AbstractUser, we inherit username, first_name, and last_name.
 
-# this serializer is for displaying data
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        #Passwords are hashed and should never be returned in API responses.
         fields = (
             "id",
             "email",
             "username",
             "first_name",
             "last_name",
+            "phone_number",
+            "telegram_id",
             "role",
         )
-        #This means clients can see these fields but cannot change them through this serializer.
-        #This prevents a user from making themselves an admin through the API.
+
         read_only_fields = (
             "id",
             "role",
+            "telegram_id",
         )
 
 
@@ -47,24 +42,47 @@ class RegisterSerializer(serializers.ModelSerializer):
         return UserService.create_user(validated_data)
 
 
+class TelegramRegisterSerializer(serializers.Serializer):
+    telegram_id = serializers.IntegerField()
+    phone_number = serializers.CharField(max_length=20)
+
+    language = serializers.ChoiceField(
+        choices=["uz", "ru"],
+        default="uz",
+    )
+
+    username = serializers.CharField(
+        required=False,
+        allow_blank=True,
+    )
+
+    first_name = serializers.CharField(
+        required=False,
+        allow_blank=True,
+    )
+
+    last_name = serializers.CharField(
+        required=False,
+        allow_blank=True,
+    )
+
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
 
-    # no create() - because login validates credentials.
     def validate(self, attrs):
         return UserService.login(
             email=attrs["email"],
             password=attrs["password"],
         )
 
+
 class ChangePasswordSerializer(serializers.Serializer):
     current_password = serializers.CharField(write_only=True)
     new_password = serializers.CharField(write_only=True)
 
     def validate(self, attrs):
-        #gets the current HTTP request.
         request = self.context["request"]
 
         UserService.change_password(
@@ -82,3 +100,5 @@ class LogoutSerializer(serializers.Serializer):
     def validate(self, attrs):
         UserService.logout(attrs["refresh"])
         return attrs
+
+

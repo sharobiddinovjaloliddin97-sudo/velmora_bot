@@ -8,8 +8,13 @@ class CatalogService:
         return Category.objects.filter(is_active=True)
 
     @staticmethod
-    def get_products():
-        return Product.objects.filter(is_active=True)
+    def get_products(category=None):
+        queryset = Product.objects.filter(is_active=True)
+
+        if category:
+            queryset = queryset.filter(category_id=category)
+
+        return queryset
 
 #Returns one active product by its slug.
     @staticmethod

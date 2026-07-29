@@ -1,23 +1,9 @@
+from config import api
+
+
 class ProductService:
 
     @staticmethod
-    async def get_products(category: str):
-        products = {
-            "Pizza": [
-                "Pepperoni",
-                "Margarita",
-                "BBQ Chicken",
-            ],
-            "Burger": [
-                "Cheeseburger",
-                "Double Burger",
-            ],
-            "Drinks": [
-                "Coca-Cola",
-                "Fanta",
-            ],
-        }
-
-        return products.get(category, [])
-
-    
+    async def get_products(category_id: int):
+        data = await api.get(f"/catalog/products/?category={category_id}")
+        return data["results"]

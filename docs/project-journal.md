@@ -1,4 +1,4 @@
-## 2026-07-25
+gigi## 2026-07-25
 
 ### Completed
 - Created a custom `User` model by extending Django's `AbstractUser`.
@@ -195,3 +195,112 @@
 ### Status
 
 ✅ Catalog module completed.
+
+## Cart Module
+
+### Completed
+
+- Created Cart and CartItem models.
+- Registered cart models in Django Admin.
+- Added cart serializers.
+- Implemented CartService.
+- Created CartViewSet.
+- Added product to cart.
+- View current user's cart.
+- Update cart item quantity.
+- Remove product from cart.
+- Calculate cart total.
+
+### Status
+
+✅ Cart module completed.
+
+## Orders Module
+
+### Completed
+
+- Created Order and OrderItem models.
+- Registered order models in Django Admin.
+- Added order serializers.
+- Implemented OrderService.
+- Created OrderViewSet.
+- Added order routes.
+- Implemented "Place Order" from cart.
+- Copied cart items into OrderItems.
+- Calculated and stored total order price.
+- Cleared cart after successful order creation.
+- Added order status update endpoint.
+- Restricted order status updates to admins and employees.
+
+### Status
+
+✅ Orders module completed.
+
+## Loyalty Module
+
+### Completed
+
+- Created LoyaltyAccount model.
+- Created Voucher model.
+- Registered Loyalty models in Django Admin.
+- Implemented LoyaltyService.
+- Automatic creation of loyalty accounts.
+- Automatic coin collection.
+- Automatic voucher generation after collecting 5 coins.
+- Support for multiple vouchers (10 coins → 2 vouchers).
+- Implemented voucher redemption.
+- Added DRF validation for voucher redemption.
+- Created loyalty serializers.
+- Created Loyalty API endpoints.
+- Added loyalty routes.
+
+### Pending
+
+- Birthday voucher (requires a birth_date field in the User model).
+- Payment integration (will call LoyaltyService.add_coin()).
+
+### Status
+
+✅ Loyalty module completed.
+
+## Notifications Module
+
+### Completed
+
+- Created NotificationService.
+- Added admin notification when a new order is placed.
+- Added customer notification when an order status changes.
+- Added notification when a loyalty voucher is earned.
+- Designed NotificationService so it can later support:
+  - Telegram
+  - Email
+  - SMS
+  - Push notifications
+- Kept all notification logic centralized in a single service.
+
+### Pending
+
+- Replace console logging with real Telegram Bot notifications.
+- Optional support for email notifications.
+- Optional support for SMS notifications.
+
+### Status
+
+✅ Notifications module completed.
+
+
+## 2026-07-28
+
+### Telegram Bot
+
+- Migrated routing to ConversationHandler.
+- Added conversation states:
+  - CHOOSING_CATEGORY
+  - CHOOSING_PRODUCT
+  - PRODUCT_DETAILS
+- Categories are loaded from the Django API.
+- Products are loaded from the Django API.
+- Product details use real backend data.
+- JWT authentication is used for protected API requests.
+- Add to Cart is integrated with the Django backend.
+- 
